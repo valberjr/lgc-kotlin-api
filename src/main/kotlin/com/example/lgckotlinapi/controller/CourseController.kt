@@ -17,13 +17,22 @@ class CourseController(private val courseRepository: CourseRepository) {
     @GetMapping("/{id}")
     fun findById(@PathVariable id: Long): ResponseEntity<Course> =
         courseRepository.findById(id)
-            .map { record -> ResponseEntity.ok().body(record) }
+            .map { recordFound -> ResponseEntity.ok().body(recordFound) }
             .orElse(ResponseEntity.notFound().build())
-
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun create(@RequestBody course: Course): Course =
         courseRepository.save(course)
 
+    @PutMapping("/{id}")
+    fun update(@PathVariable id: Long, @RequestBody course: Course): ResponseEntity<Course> =
+        courseRepository.findById(id)
+            .map { recordFound ->
+                recordFound.name = course.name
+                recordFound.category = course.category
+                val updatedRecord = courseRepository.save(recordFound)
+                ResponseEntity.ok().body(updatedRecord)
+            }
+            .orElse(ResponseEntity.notFound().build())
 }
