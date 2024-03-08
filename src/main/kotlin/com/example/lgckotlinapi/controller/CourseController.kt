@@ -35,4 +35,13 @@ class CourseController(private val courseRepository: CourseRepository) {
                 ResponseEntity.ok().body(updatedRecord)
             }
             .orElse(ResponseEntity.notFound().build())
+
+    @DeleteMapping("/{id}")
+    fun delete(@PathVariable id: Long): ResponseEntity<Unit> =
+        courseRepository.findById(id)
+            .map { _ ->
+                courseRepository.deleteById(id)
+                ResponseEntity<Unit>(HttpStatus.NO_CONTENT)
+            }
+            .orElse(ResponseEntity.notFound().build())
 }
