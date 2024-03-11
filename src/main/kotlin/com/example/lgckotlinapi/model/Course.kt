@@ -5,9 +5,13 @@ import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Pattern
+import org.hibernate.annotations.SQLDelete
+import org.hibernate.annotations.SQLRestriction
 import org.hibernate.validator.constraints.Length
 
 @Entity
+@SQLDelete(sql = "UPDATE course SET status = 'inactive' WHERE id = ?")
+@SQLRestriction("status = 'active'")
 class Course {
 
     @Id
@@ -26,4 +30,10 @@ class Course {
     @Pattern(regexp = "back-end|front-end")
     @Column(length = 10, nullable = false)
     var category: String = ""
+
+    @NotNull
+    @Length(max = 10)
+    @Pattern(regexp = "active|inactive")
+    @Column(length = 10, nullable = false)
+    var status: String = "active"
 }
