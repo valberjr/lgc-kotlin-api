@@ -17,23 +17,23 @@ class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty("_id")
-    var id: Long = 0
+    val id: Long = 0
 
     @NotBlank
     @NotNull
     @Length(min = 5, max = 100)
     @Column(length = 100, nullable = false)
-    var name: String = ""
+    val name: String = ""
 
     @NotNull
     @Length(max = 10)
     @Pattern(regexp = "back-end|front-end")
     @Column(length = 10, nullable = false)
-    var category: String = ""
+    val category: String = ""
 
     @NotNull
     @Length(max = 10)
     @Pattern(regexp = "active|inactive")
     @Column(length = 10, nullable = false)
-    var status: String = "active"
+    val status: String = "active"
 }
