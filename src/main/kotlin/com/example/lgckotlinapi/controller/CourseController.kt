@@ -6,7 +6,6 @@ import jakarta.validation.Valid
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Positive
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
@@ -19,26 +18,17 @@ class CourseController(private val service: CourseService) {
     fun findAll(): List<Course> = service.findAll()
 
     @GetMapping("/{id}")
-    fun findById(@PathVariable @NotNull @Positive id: Long): ResponseEntity<Course> =
-        service.findById(id)
-            .map { recordFound -> ResponseEntity.ok().body(recordFound) }
-            .orElse(ResponseEntity.notFound().build())
+    fun findById(@PathVariable @NotNull @Positive id: Long): Course = service.findById(id)
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun save(@RequestBody @Valid course: Course): Course = service.save(course)
 
     @PutMapping("/{id}")
-    fun update(@PathVariable @NotNull @Positive id: Long, @RequestBody @Valid course: Course): ResponseEntity<Course> =
+    fun update(@PathVariable @NotNull @Positive id: Long, @RequestBody @Valid course: Course): Course =
         service.update(id, course)
-            .map { recordFound -> ResponseEntity.ok().body(recordFound) }
-            .orElse(ResponseEntity.notFound().build())
 
     @DeleteMapping("/{id}")
-    fun deleteById(@PathVariable @NotNull @Positive id: Long): ResponseEntity<Unit> =
-        if (service.deleteById(id)) {
-            ResponseEntity.noContent().build()
-        } else {
-            ResponseEntity.notFound().build()
-        }
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun deleteById(@PathVariable @NotNull @Positive id: Long): Unit = service.deleteById(id)
 }
