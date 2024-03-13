@@ -1,5 +1,6 @@
 package com.example.lgckotlinapi.model
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.persistence.*
 
 @Entity
@@ -16,5 +17,6 @@ class Lesson(
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "course_id")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // fix for circular dependency
     val course: Course
 )

@@ -41,6 +41,5 @@ class Course(
     val status: Status = Status.ACTIVE,
 
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "course")
-    @JsonProperty("lessons")
     val lessons: List<Lesson> = emptyList()
 )

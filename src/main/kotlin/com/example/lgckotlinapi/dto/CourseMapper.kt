@@ -10,7 +10,8 @@ class CourseMapper {
     fun toDTO(course: Course): CourseDTO = CourseDTO(
         id = course.id,
         name = course.name,
-        category = course.category.value
+        category = course.category.value,
+        lessons = course.lessons
     )
 
     fun toEntity(courseDTO: CourseDTO): Course = Course(
