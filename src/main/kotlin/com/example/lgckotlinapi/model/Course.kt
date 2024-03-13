@@ -12,28 +12,28 @@ import org.hibernate.validator.constraints.Length
 @Entity
 @SQLDelete(sql = "UPDATE course SET status = 'inactive' WHERE id = ?")
 @SQLRestriction("status = 'active'")
-class Course {
+class Course(
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty("_id")
-    val id: Long = 0
+    val id: Long,
 
     @NotBlank
     @NotNull
     @Length(min = 5, max = 100)
     @Column(length = 100, nullable = false)
-    val name: String = ""
+    val name: String,
 
     @NotNull
     @Length(max = 10)
     @Pattern(regexp = "back-end|front-end")
     @Column(length = 10, nullable = false)
-    val category: String = ""
+    val category: String,
 
     @NotNull
     @Length(max = 10)
     @Pattern(regexp = "active|inactive")
     @Column(length = 10, nullable = false)
     val status: String = "active"
-}
+)

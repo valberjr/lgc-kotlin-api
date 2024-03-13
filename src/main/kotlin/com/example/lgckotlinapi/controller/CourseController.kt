@@ -1,6 +1,6 @@
 package com.example.lgckotlinapi.controller
 
-import com.example.lgckotlinapi.model.Course
+import com.example.lgckotlinapi.dto.CourseDTO
 import com.example.lgckotlinapi.service.CourseService
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotNull
@@ -15,17 +15,17 @@ import org.springframework.web.bind.annotation.*
 class CourseController(private val service: CourseService) {
 
     @GetMapping
-    fun findAll(): List<Course> = service.findAll()
+    fun findAll(): List<CourseDTO> = service.findAll()
 
     @GetMapping("/{id}")
-    fun findById(@PathVariable @NotNull @Positive id: Long): Course = service.findById(id)
+    fun findById(@PathVariable @NotNull @Positive id: Long): CourseDTO = service.findById(id)
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun save(@RequestBody @Valid course: Course): Course = service.save(course)
+    fun save(@RequestBody @Valid course: CourseDTO): CourseDTO = service.save(course)
 
     @PutMapping("/{id}")
-    fun update(@PathVariable @NotNull @Positive id: Long, @RequestBody @Valid course: Course): Course =
+    fun update(@PathVariable @NotNull @Positive id: Long, @RequestBody @Valid course: CourseDTO): CourseDTO =
         service.update(id, course)
 
     @DeleteMapping("/{id}")
