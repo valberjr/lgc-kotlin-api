@@ -1,10 +1,13 @@
 package com.example.lgckotlinapi.model
 
+import com.example.lgckotlinapi.enums.Category
+import com.example.lgckotlinapi.enums.Status
+import com.example.lgckotlinapi.enums.converters.CategoryConverter
+import com.example.lgckotlinapi.enums.converters.StatusConverter
 import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
-import jakarta.validation.constraints.Pattern
 import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.SQLRestriction
 import org.hibernate.validator.constraints.Length
@@ -27,13 +30,13 @@ class Course(
 
     @NotNull
     @Length(max = 10)
-    @Pattern(regexp = "back-end|front-end")
     @Column(length = 10, nullable = false)
-    val category: String,
+    @Convert(converter = CategoryConverter::class)
+    val category: Category,
 
     @NotNull
     @Length(max = 10)
-    @Pattern(regexp = "active|inactive")
     @Column(length = 10, nullable = false)
-    val status: String = "active"
+    @Convert(converter = StatusConverter::class)
+    val status: Status = Status.ACTIVE
 )

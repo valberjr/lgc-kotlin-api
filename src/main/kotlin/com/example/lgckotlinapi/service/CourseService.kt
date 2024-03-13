@@ -37,7 +37,7 @@ class CourseService(
         repository
             .findById(id)
             .map { _ ->
-                val recordFound = Course(course.id, course.name, course.category)
+                val recordFound = Course(course.id, course.name, mapper.convertCategoryValue(course.category))
                 mapper.toDTO(repository.save(recordFound))
             }
             .orElseThrow { RecordNotFoundException(id) }
