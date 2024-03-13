@@ -1,6 +1,5 @@
 package com.example.lgckotlinapi.dto
 
-import com.example.lgckotlinapi.model.Lesson
 import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.persistence.Column
 import jakarta.validation.constraints.NotBlank
@@ -25,5 +24,5 @@ data class CourseDTO(
     @Column(length = 10, nullable = false)
     val category: String,
 
-    val lessons: List<Lesson>
+    val lessons: List<LessonDTO>
 )
