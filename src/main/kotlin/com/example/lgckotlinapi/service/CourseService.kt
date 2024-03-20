@@ -33,11 +33,14 @@ class CourseService(
     fun save(@Valid @NotNull course: CourseDTO): CourseDTO =
         mapper.toDTO(repository.save(mapper.toEntity(course)))
 
-    fun update(@NotNull @Positive id: Long, @Valid @NotNull course: CourseDTO): CourseDTO =
+    fun update(@NotNull @Positive id: Long, @Valid @NotNull courseDTO: CourseDTO): CourseDTO =
         repository
             .findById(id)
             .map { _ ->
-                val recordFound = Course(course.id, course.name, mapper.convertCategoryValue(course.category))
+                val course = mapper.toEntity(courseDTO)
+                val recordFound = Course(courseDTO.id, courseDTO.name, mapper.convertCategoryValue(courseDTO.category))
+                recordFound.lessons.clear()
+                course.lessons.forEach(recordFound.lessons::add)
                 mapper.toDTO(repository.save(recordFound))
             }
             .orElseThrow { RecordNotFoundException(id) }

@@ -2,6 +2,7 @@ package com.example.lgckotlinapi.dto
 
 import com.example.lgckotlinapi.enums.Category
 import com.example.lgckotlinapi.model.Course
+import com.example.lgckotlinapi.model.Lesson
 import org.springframework.stereotype.Component
 import java.util.stream.Collectors
 
@@ -29,11 +30,27 @@ class CourseMapper {
     }
 
 
-    fun toEntity(courseDTO: CourseDTO): Course = Course(
-        id = courseDTO.id,
-        name = courseDTO.name,
-        category = convertCategoryValue(courseDTO.category)
-    )
+    fun toEntity(courseDTO: CourseDTO): Course {
+        val course: Course = Course(
+            id = courseDTO.id,
+            name = courseDTO.name,
+            category = convertCategoryValue(courseDTO.category)
+        )
+
+        val lessons = courseDTO.lessons.stream()
+            .map { lessonDTO ->
+                Lesson(
+                    id = lessonDTO.id,
+                    name = lessonDTO.name,
+                    youtubeUrl = lessonDTO.youtubeUrl,
+                    course = course
+                )
+            }.collect(Collectors.toList())
+
+        course.lessons = lessons
+
+        return course
+    }
 
     fun convertCategoryValue(value: String): Category =
         when (value) {

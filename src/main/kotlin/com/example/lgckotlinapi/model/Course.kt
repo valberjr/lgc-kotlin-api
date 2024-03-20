@@ -41,5 +41,5 @@ class Course(
     val status: Status = Status.ACTIVE,
 
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "course")
-    val lessons: List<Lesson> = emptyList()
+    var lessons: MutableList<Lesson> = mutableListOf()
 )
