@@ -6,7 +6,9 @@ import com.example.lgckotlinapi.enums.converters.CategoryConverter
 import com.example.lgckotlinapi.enums.converters.StatusConverter
 import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.persistence.*
+import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull
 import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.SQLRestriction
@@ -40,6 +42,9 @@ class Course(
     @Convert(converter = StatusConverter::class)
     val status: Status = Status.ACTIVE,
 
+    @NotNull
+    @NotEmpty
+    @Valid
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "course")
     var lessons: MutableList<Lesson> = mutableListOf()
 )
