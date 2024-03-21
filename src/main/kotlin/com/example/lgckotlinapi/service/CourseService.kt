@@ -2,15 +2,18 @@ package com.example.lgckotlinapi.service
 
 import com.example.lgckotlinapi.dto.CourseDTO
 import com.example.lgckotlinapi.dto.CourseMapper
+import com.example.lgckotlinapi.dto.CoursePageDTO
 import com.example.lgckotlinapi.exception.RecordNotFoundException
 import com.example.lgckotlinapi.model.Course
 import com.example.lgckotlinapi.repository.CourseRepository
 import jakarta.validation.Valid
+import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Positive
+import jakarta.validation.constraints.PositiveOrZero
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.validation.annotation.Validated
-import java.util.stream.Collectors
 
 @Service
 @Validated
@@ -19,11 +22,18 @@ class CourseService(
     private val mapper: CourseMapper
 ) {
 
-    fun findAll(): List<CourseDTO> = repository
-        .findAll()
-        .stream()
-        .map { mapper.toDTO(it) }
-        .collect(Collectors.toList())
+    fun findAll(
+        @PositiveOrZero page: Int,
+        @Positive @Max(100) pageSize: Int
+    ): CoursePageDTO =
+        repository.findAll(PageRequest.of(page, pageSize))
+            .let { coursePage ->
+                CoursePageDTO(
+                    courses = coursePage.content.map(mapper::toDTO),
+                    totalElements = coursePage.totalElements,
+                    totalPages = coursePage.totalPages
+                )
+            }
 
     fun findById(@NotNull @Positive id: Long): CourseDTO = repository
         .findById(id)
