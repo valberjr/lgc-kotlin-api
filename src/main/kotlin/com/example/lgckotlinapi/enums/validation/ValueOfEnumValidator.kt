@@ -7,7 +7,8 @@ class ValueOfEnumValidator : ConstraintValidator<ValueOfEnum, CharSequence> {
     private lateinit var acceptedValues: List<String>
 
     override fun initialize(annotation: ValueOfEnum) {
-        acceptedValues = annotation.enumClass.java.enumConstants.map { it.name }
+        acceptedValues = annotation.enumClass.java.enumConstants
+            .map { it.toString() }
     }
 
     override fun isValid(value: CharSequence?, context: ConstraintValidatorContext): Boolean {
